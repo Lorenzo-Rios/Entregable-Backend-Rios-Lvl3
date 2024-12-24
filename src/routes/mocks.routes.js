@@ -1,5 +1,5 @@
 import express from 'express';
-import { generateMockUsers, generateMockPets } from '../utils/mocking.bycript.js';
+import { generateMockUsers, generateMockPets } from '../utils/mocking.js';
 import { userModel } from '../models/user.model.js';
 import { petModel } from '../models/pet.model.js';
 
@@ -22,8 +22,8 @@ router.post('/generateData', async (req, res) => {
     const { users, pets } = req.body;
 
     try {
-        const createdUsers = await User.insertMany(generateMockUsers(users));
-        const createdPets = await Pet.insertMany(generateMockPets(pets));
+        const createdUsers = await userModel.insertMany(generateMockUsers(users));
+        const createdPets = await petModel.insertMany(generateMockPets(pets));
         res.status(201).json({ message: 'Data generated successfully', createdUsers, createdPets });
     } catch (error) {
         res.status(500).json({ message: 'Error generating data', error });

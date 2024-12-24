@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { passwordHash } from './bycrypt';
+import { passwordHash } from './bycrypt.js';
 
 export const generateMockUsers = (count) => {
     const users = [];

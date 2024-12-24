@@ -25,7 +25,7 @@
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('/api/pets', {
+            const response = await fetch('/api/pet', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

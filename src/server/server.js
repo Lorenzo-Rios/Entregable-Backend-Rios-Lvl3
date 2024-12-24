@@ -12,6 +12,7 @@ import path from 'path'
 import mocksRoute from '../routes/mocks.routes.js'
 import userRoute from '../routes/users.routes.js'
 import viewRoute from '../routes/views.routes.js'
+import petRoute from '../routes/pets.routes.js'
 
 /* DB */
 import db, { configObjet } from './connection.db.js'
@@ -23,6 +24,7 @@ export default class Server {
         this.port = configObjet.port
         this.apiPaht = {
             mock: '/api/mock',
+            pet: '/api/pet',
             user: '/api/user'
         }
         this.viewEngine()
@@ -50,6 +52,7 @@ export default class Server {
     }
     router(){
         this.app.use('/', viewRoute)
+        this.app.use(this.apiPaht.pet, petRoute)
         this.app.use(this.apiPaht.mock, mocksRoute)
         this.app.use(this.apiPaht.user, userRoute)
     }
