@@ -1,14 +1,13 @@
-import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
+import { passwordHash } from './bycrypt';
 
 export const generateMockUsers = (count) => {
     const users = [];
-    const passwordHash = bcrypt.hashSync('coder123', 10);
 
     for (let i = 0; i < count; i++) {
         users.push({
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
+            firs_name: faker.person.firstName(),
+            last_name: faker.person.lastName(),
             email: faker.internet.email(),
             password: passwordHash,
             role: faker.helpers.arrayElement(['user', 'admin']),
@@ -24,7 +23,7 @@ export const generateMockPets = (count) => {
         pets.push({
             name: faker.animal.cat(),
             species: faker.animal.type(),
-            age: faker.number.int({ min: 1, max: 15 }),
+            date: faker.number.int({ min: 1, max: 15 }),
             owner: faker.database.mongodbObjectId()
         });
     }

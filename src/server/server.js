@@ -31,25 +31,23 @@ export default class Server {
         this.connectDB()
     }
 
-    middlewares () {
+    middlewares() {
         this.app.use(cors({
             origin: '*'
         }));
         this.app.use(morgan('combined'));
-        this.app.use(express.json({ limit: '50mb' }));     
-        this.app.use(express.static(path.resolve('public')));
+        this.app.use(express.json({ limit: '50mb' }));      
     }
-
+    
     viewEngine() {
-        this.app.engine('.hbs', engine({ 
-            extname: '.hbs', 
+        this.app.engine('.handlebars', engine({ 
+            extname: '.handlebars', 
             defaultLayout: 'main' 
         }));
-        this.app.set('view engine', '.hbs');
-        this.app.set('views', path.resolve('views'));
-
+        this.app.set('view engine', '.handlebars');
+    
+        this.app.set('views', path.resolve('src/views'));  
     }
-
     router(){
         this.app.use('/', viewRoute)
         this.app.use(this.apiPaht.mock, mocksRoute)

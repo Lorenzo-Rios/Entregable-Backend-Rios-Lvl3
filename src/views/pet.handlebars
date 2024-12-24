@@ -1,0 +1,48 @@
+<h2 style="text-align: center; margin-bottom: 20px;">Agregar Mascota</h2>
+<form id="petForm" style="max-width: 500px; margin: 0 auto; background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <label for="name" style="font-weight: bold; margin-bottom: 5px; display: block;">Nombre de la Mascota:</label>
+    <input type="text" name="name" required style="display: block; margin-bottom: 15px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
+    <label for="species" style="font-weight: bold; margin-bottom: 5px; display: block;">Especie:</label>
+    <input type="text" name="species" required style="display: block; margin-bottom: 15px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
+    <label for="date" style="font-weight: bold; margin-bottom: 5px; display: block;">Fecha de Nacimiento (opcional):</label>
+    <input type="text" name="date" style="display: block; margin-bottom: 15px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
+    <label for="owner" style="font-weight: bold; margin-bottom: 5px; display: block;">Dueño (ID de usuario):</label>
+    <input type="text" name="owner" required style="display: block; margin-bottom: 25px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+
+    <button type="submit" style="background-color: #007BFF; color: white; border: none; padding: 12px 20px; cursor: pointer; width: 100%; border-radius: 5px; font-size: 16px; font-weight: bold;">
+        Agregar Mascota
+    </button>
+</form>
+
+<script>
+    document.getElementById('petForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/api/pets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Mascota agregada con éxito');
+                this.reset();
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            alert('Hubo un error al agregar la mascota');
+            console.error(error);
+        }
+    });
+</script>

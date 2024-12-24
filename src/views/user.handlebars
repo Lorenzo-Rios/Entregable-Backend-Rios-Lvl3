@@ -1,4 +1,4 @@
-<form action="/api/users" method="POST" style="max-width: 500px; margin: 0 auto;">
+<form id="userForm" style="max-width: 500px; margin: 0 auto;">
     <label for="first_name">Nombre:</label>
     <input type="text" name="first_name" required style="display: block; margin-bottom: 10px; width: 100%;">
 
@@ -26,3 +26,35 @@
     <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px 15px; cursor: pointer;">Crear Usuario</button>
 </form>
 
+<script>
+    document.getElementById('userForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    // Agregar pets vacío manualmente
+    data.pets = [];
+
+    try {
+        const response = await fetch('/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert('Usuario creado con éxito');
+            this.reset();
+        } else {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        alert('Hubo un error al crear el usuario');
+        console.error(error);
+    }
+});
+</script>
