@@ -3,6 +3,8 @@ import express from 'express'
 import { engine } from 'express-handlebars';
 import cors from 'cors'
 import morgan from 'morgan'
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 /* Access */
 import http from 'http'
@@ -31,6 +33,12 @@ export default class Server {
         this.middlewares()
         this.router()
         this.connectDB()
+        this.swaggerDocs()
+    }
+
+    swaggerDocs() {
+        const swaggerDocument = YAML.load(path.resolve('swagger.yaml'));
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 
     middlewares() {
