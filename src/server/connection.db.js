@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const configObjet = {
-    port: process.env.SERVER_PORT || 8080,
+    port: process.env.SERVER_PORT || 8081,
     private_key: process.env.PRIVATE_KEY
 }
 
