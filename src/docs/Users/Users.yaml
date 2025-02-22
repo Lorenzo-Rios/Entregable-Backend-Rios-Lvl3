@@ -1,0 +1,13 @@
+import YAML from 'yamljs';
+import swaggerUi from 'swagger-ui-express';
+import Server from '../src/server/server.js';
+
+describe('Server', () => {
+describe('swaggerDocs', () => {
+let server;
+
+beforeEach(() => {
+server = new Server();
+});
+});
+});

@@ -1,10 +1,12 @@
 /* Dependencies */
 import express from 'express'
 import { engine } from 'express-handlebars';
+import hbs from 'handlebars'
 import cors from 'cors'
 import morgan from 'morgan'
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 /* Access */
 import http from 'http'
@@ -34,8 +36,22 @@ export default class Server {
         this.router()
         this.connectDB()
         this.swaggerDocs()
+        this.swagger()
     }
 
+    swagger() {
+      const swaggerOptions = { 
+        definition: {
+          openapi: '3.0.1',
+          info: {
+            title: 'Documentacion de app web de Adopcion de mascotas',
+            version: '1.0.0',
+            description: 'API de Adopcion de mascotas',
+          },
+          apis: []
+        }
+      }
+    }
     swaggerDocs() {
         const swaggerDocument = YAML.load(path.resolve('swagger.yaml'));
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -57,6 +73,14 @@ export default class Server {
         this.app.set('view engine', '.handlebars');
     
         this.app.set('views', path.resolve('src/views'));  
+
+        hbs.registerHelper('disable-prototype-check', function() {
+          this.prototypeAccess = true;
+        });
+
+        hbs.create({
+          allowProtoPropertiesByDefault: true
+        });
     }
     router(){
         this.app.use('/', viewRoute)

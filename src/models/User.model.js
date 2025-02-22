@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const usersCollection = 'users'
 
@@ -22,7 +23,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    phone: Number,
+    phone: String,
     role: {
         type: String,
         enum: ['user', 'admin'],
@@ -33,6 +34,8 @@ const userSchema = new Schema({
         default: []
     }
 });
+
+userSchema.plugin(mongoosePaginate)
 
 const userModel = model( usersCollection, userSchema )
 

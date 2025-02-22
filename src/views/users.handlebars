@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f5f5f5; color: #333; padding: 20px;">
+    <h1 style="text-align: center; color: #007bff;">Usuarios</h1>
+
+    <ul style="list-style-type: none; padding: 0;">
+    {{#each users}}
+    {{log this}}
+    <li style="background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+        <strong>Nombre:</strong> {{this.first_name}} {{this.last_name}} <br>
+        <strong>Usuario:</strong> {{this.user_name}} <br>
+        <strong>Email:</strong> {{this.email}} <br>
+        <strong>Teléfono:</strong> {{this.phone}} <br>
+        <strong>Rol:</strong> {{this.role}} <br>
+    </li>
+    {{else}}
+        <li>No hay usuarios disponibles.</li>
+    {{/each}}
+</ul>
+
+    <!-- Paginación -->
+    <div class="pagination" style="text-align: center; margin-top: 20px;">
+        {{#if hasPrevPage}}
+            <a href="{{prevLink}}" style="padding: 8px 12px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px; margin-right: 10px;">Anterior</a>
+        {{/if}}
+
+        <span style="font-size: 16px; color: #333;">Página {{currentPage}} de {{totalPages}}</span>
+
+        {{#if hasNextPage}}
+            <a href="{{nextLink}}" style="padding: 8px 12px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px; margin-left: 10px;">Siguiente</a>
+        {{/if}}
+    </div>
+</body>
+</html>

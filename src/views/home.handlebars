@@ -6,15 +6,44 @@
     </header>
     <nav>
         <li>
-            <a href="/pet">
-                Mascotas
+            <a href="/Createpet">
+                Agregar mascota
             </a>
         </li>
 
         <li>
-            <a href="/user">
-                Usuarios
+            <a href="/Createuser">
+                Crear usuario
             </a>
+        </li>
+
+        <li>
+            <a href="#" id="generateDataLink">
+                Generar mascotas y usuarios
+            </a>
+        </li>
+
+        <li>
+          <a href="/Usuarios">Usuarios</a>
+        </li>
+
+        <li>
+            <a href="/Mascotas">Mascotas</a>
         </li>
     </nav>
 </div>
+
+<script>
+    document.getElementById('generateDataLink').addEventListener('click', async (event) => {
+        event.preventDefault();  // Evitar que el enlace haga una navegación
+        try {
+            const response = await fetch('/api/mock/generateData', {
+                method: 'POST'
+            });
+            const data = await response.json();
+            alert('Datos generados correctamente');
+        } catch (error) {
+            alert('Error al generar los datos');
+        }
+    });
+</script>
