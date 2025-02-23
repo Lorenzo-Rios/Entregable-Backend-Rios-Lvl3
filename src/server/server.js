@@ -1,61 +1,53 @@
-/* Dependencies */
-import express from 'express'
-import { engine } from 'express-handlebars';
-import hbs from 'handlebars'
-import cors from 'cors'
-import morgan from 'morgan'
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
-import swaggerJSDoc from 'swagger-jsdoc';
+  /* Dependencies */
+  import express from 'express'
+  import { engine } from 'express-handlebars';
+  import hbs from 'handlebars'
+  import cors from 'cors'
+  import morgan from 'morgan'
+  import YAML from 'yamljs';
+  import swaggerUi from 'swagger-ui-express';
+  import swaggerJSDoc from 'swagger-jsdoc';
+  import swaggerOptions from '../config/swaggerConfig.js';
 
-/* Access */
-import http from 'http'
-import path from 'path'
+  /* Access */
+  import { __dirname } from '../utils/dirname.js';
+  import http from 'http'
+  import path from 'path'
 
-/* Routes */
-import mocksRoute from '../routes/mocks.routes.js'
-import userRoute from '../routes/users.routes.js'
-import viewRoute from '../routes/views.routes.js'
-import petRoute from '../routes/pets.routes.js'
+  /* Routes */
+  import mocksRoute from '../routes/mocks.routes.js'
+  import userRoute from '../routes/users.routes.js'
+  import viewRoute from '../routes/views.routes.js'
+  import petRoute from '../routes/pets.routes.js'
+  import sessionRoute from '../routes/sessions.routes.js'
+  import adoptionRoute from '../routes/adoptions.routes.js'
 
-/* DB */
-import db, { configObjet } from './connection.db.js'
+  /* DB */
+  import db, { configObjet } from './connection.db.js'
 
-export default class Server {
-    constructor() {
-        this.app = express()
-        this.server = http.createServer(this.app)
-        this.port = configObjet.port
-        this.apiPaht = {
-            mock: '/api/mock',
-            pet: '/api/pet',
-            user: '/api/user'
-        }
-        this.viewEngine()
-        this.middlewares()
-        this.router()
-        this.connectDB()
-        this.swaggerDocs()
-        this.swagger()
-    }
-
-    swagger() {
-      const swaggerOptions = { 
-        definition: {
-          openapi: '3.0.1',
-          info: {
-            title: 'Documentacion de app web de Adopcion de mascotas',
-            version: '1.0.0',
-            description: 'API de Adopcion de mascotas',
-          },
-          apis: []
-        }
+  export default class Server {
+      constructor() {
+          this.app = express()
+          this.server = http.createServer(this.app)
+          this.port = configObjet.port
+          this.apiPaht = {
+              mock: '/api/mock',
+              pet: '/api/pet',
+              user: '/api/user',
+              session: '/api/session',
+              adoption: '/api/adoption',
+          }
+          this.viewEngine()
+          this.middlewares()
+          this.router()
+          this.connectDB()
+          this.swagger()
       }
-    }
-    swaggerDocs() {
-        const swaggerDocument = YAML.load(path.resolve('swagger.yaml'));
-        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    }
+
+      swagger() {
+        const swaggerDocs = swaggerJSDoc(swaggerOptions); // Usa swagger-jsdoc para generar la documentación desde la configuración
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs)); // Expone Swagger UI en /api-docs
+      }
 
     middlewares() {
         this.app.use(cors({
@@ -84,6 +76,8 @@ export default class Server {
     }
     router(){
         this.app.use('/', viewRoute)
+        this.app.use(this.apiPaht.session, sessionRoute)
+        this.app.use(this.apiPaht.adoption, adoptionRoute)
         this.app.use(this.apiPaht.pet, petRoute)
         this.app.use(this.apiPaht.mock, mocksRoute)
         this.app.use(this.apiPaht.user, userRoute)
