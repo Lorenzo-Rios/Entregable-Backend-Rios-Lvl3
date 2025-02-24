@@ -4,7 +4,6 @@
   import hbs from 'handlebars'
   import cors from 'cors'
   import morgan from 'morgan'
-  import YAML from 'yamljs';
   import swaggerUi from 'swagger-ui-express';
   import swaggerJSDoc from 'swagger-jsdoc';
   import swaggerOptions from '../config/swaggerConfig.js';
@@ -16,7 +15,7 @@
 
   /* Routes */
   import mocksRoute from '../routes/mocks.routes.js'
-  import { UserRoute } from '../routes/Client/UserClass/userClass.routes.js'
+  import { UserRoute } from '../routes/users.routes.js'
   import viewRoute from '../routes/views.routes.js'
   import petRoute from '../routes/pets.routes.js'
   import sessionRoute from '../routes/sessions.routes.js'
@@ -81,7 +80,6 @@
         this.app.use(this.apiPaht.adoption, adoptionRoute)
         this.app.use(this.apiPaht.pet, petRoute)
         this.app.use(this.apiPaht.mock, mocksRoute)
-        this.app.use(this.apiPaht.user, userRoute)
         this.app.use(this.apiPaht.user, userRoute.getRouter());
     }
 

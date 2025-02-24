@@ -1,32 +1,14 @@
-import { Router } from 'express'
-import { userModel } from '../models/user.model.js';
-import { hashPassword } from '../utils/bycrypt.js';
-import { GetUser } from '../controllers/User/User.controller.js';
+import { RouterClass } from './routerClass.routes.js';
+import { GetUser, PostUser, PutUser, DeleteUser } from '../controllers/User/User.controller.js';
+import { authorization } from '../middlewares/authorization.middleware.js';
 
-const router = Router()
-
-router.get('/', GetUser)
-
-router.post('/', async (req, res) => {
-    const { first_name, last_name, user_name, email, password, phone, role, pets } = req.body;
-    try {
-        const hashedPassword = await hashPassword(password)
-
-        const newUser = new userModel({
-            first_name,
-            last_name,
-            user_name,
-            email,
-            password: hashedPassword, 
-            phone,
-            role,
-            pets: pets || []
-        });
-        await newUser.save();
-        res.redirect('/');
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating user', error });
+class UserRoute extends RouterClass {
+    init() {
+        this.get('/', [], GetUser);   // Ruta sin protección
+        this.post('/', [], PostUser); // Ruta sin protección
+        this.put('/:uid', [], PutUser); // Ruta sin protección
+        this.delete('/:uid', [], DeleteUser); // Ruta sin protección
     }
-});
+}
 
-export default router
+export { UserRoute };

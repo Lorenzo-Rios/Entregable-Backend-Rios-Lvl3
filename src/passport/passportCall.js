@@ -19,4 +19,4 @@ const passportCall = (strategy) => {
 
 export {
     passportCall
-};
+}

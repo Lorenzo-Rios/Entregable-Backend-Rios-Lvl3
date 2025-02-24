@@ -1,4 +1,4 @@
-import { RouterClass } from '../RouterClass/RouterClass.routes.js'
+import { RouterClass } from './routerClass.routes.js'
 
 class UserRoute extends RouterClass {
 

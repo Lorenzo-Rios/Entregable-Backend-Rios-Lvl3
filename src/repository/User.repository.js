@@ -1,8 +1,12 @@
-import { UserDAO } from '../mongo/User/User.dao.js'; 
+import { UserDAO } from '../mongo/dao/User/User.dao.js'; 
 
 const userManager = new UserDAO();  
 
 class UserRepository {
+
+    async getPaginatedUsers(filter, pagination) {
+        return await userManager.getPaginatedUsers(filter, pagination);
+    }
     async getAll() {
         return await userManager.getAllUsers();
     }

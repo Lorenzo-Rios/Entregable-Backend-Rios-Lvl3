@@ -1,9 +1,11 @@
-import { userModel } from '../../models/user.model.js'
+import { userModel } from '../../../models/user.model.js'
 
 class UserDAO {
     constructor() {
         this.model = userModel
     }
+
+    getPaginatedUsers = async (options, filter = {}) => await this.model.paginate(filter, options)
 
     getAllUsers = async () => await this.model.find({})
 
