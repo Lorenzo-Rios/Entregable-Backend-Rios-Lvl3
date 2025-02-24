@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
       const user = await userModel.findOne({ user_name: owner }); // También podrías buscar por email
       
       if (!user) {
-          return res.status(400).json({ message: 'Owner not found' });
+          return res.status(400).json({ message: 'Owner no encontrado!' });
       }
 
       // Crear la nueva mascota con el ID del usuario
@@ -27,9 +27,9 @@ router.post('/', async (req, res) => {
       });
 
       await newPet.save();
-      res.status(201).json({ message: 'Pet created successfully', pet: newPet });
+      res.status(201).json({ message: 'Pet creada correctamente', pet: newPet });
   } catch (error) {
-      res.status(500).json({ message: 'Error creating Pet', error });
+      res.status(500).json({ message: 'Error en craeando mascota', error });
   }
 });
 

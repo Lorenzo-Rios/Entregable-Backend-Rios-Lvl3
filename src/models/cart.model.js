@@ -9,11 +9,6 @@ const cartSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'pets'
             },
-
-            quantity: {
-                type: Number,
-                default: 1
-            }
         }
     ]
 })

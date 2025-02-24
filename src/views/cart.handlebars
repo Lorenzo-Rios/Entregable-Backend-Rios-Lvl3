@@ -9,15 +9,15 @@
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f5f5f5; color: #333; padding: 20px;">
     <h1 style="text-align: center; color: #007bff;">Carrito</h1>
-    <ul id="cartProducts" style="list-style-type: none; padding: 0;">
-        {{#each cart.products}}
+    <ul id="cartPets" style="list-style-type: none; padding: 0;">
+        {{#each cart.pets}}
         <li style="background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 15px;">
-            <strong>Id del Producto:</strong> {{this.product._id}} <br>
-            <strong>Nombre:</strong> {{this.product.tittle}} <br>
-            <strong>Precio:</strong> ${{this.product.price}} <br>
-            <strong>Cantidad:</strong> {{this.quantity}} <br>
-            <strong>Total por unidad:</strong> ${{multiply this.product.price this.quantity}} <br>
-            <button onclick="removeFromCart('{{this.product._id}}')" 
+            <strong>Id de la mascota:</strong> {{this.pet._id}} <br>
+            <strong>Nombre:</strong> {{this.pet.name}} <br>
+            <strong>Especie:</strong> {{this.pet.species}} <br>
+            <strong>Fecha de nacimiento:</strong> {{this.pet.date}} <br>
+            <strong>Dueño:</strong> {{this.pet.owner}} <br>
+            <button onclick="removeFromCart('{{this.pet._id}}')" 
                     style="margin-top: 10px; padding: 8px 12px; background-color: #dc3545; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
                 Eliminar
             </button>
@@ -48,7 +48,7 @@
     <div class="ticketContainer" style="margin-top: 20px;"></div>
 
     <script>
-    const cartId = '66f7728452336cfd1dc02875';
+    const cartId = '67bccb1ed96e6e13d4932012';
     const cartProducts = document.getElementById('cartProducts');
 
     function removeFromCart(productId) {

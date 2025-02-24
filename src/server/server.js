@@ -20,6 +20,7 @@
   import petRoute from '../routes/pets.routes.js'
   import sessionRoute from '../routes/sessions.routes.js'
   import adoptionRoute from '../routes/adoptions.routes.js'
+  import cartRoute from '../routes/carts.routes.js'
 
   /* DB */
   import db, { configObjet } from './connection.db.js'
@@ -35,6 +36,7 @@
               user: '/api/user',
               session: '/api/session',
               adoption: '/api/adoption',
+              cart: '/api/cart',
           }
           this.viewEngine()
           this.middlewares()
@@ -80,7 +82,8 @@
         this.app.use(this.apiPaht.adoption, adoptionRoute)
         this.app.use(this.apiPaht.pet, petRoute)
         this.app.use(this.apiPaht.mock, mocksRoute)
-        this.app.use(this.apiPaht.user, userRoute.getRouter());
+        this.app.use(this.apiPaht.cart, cartRoute)
+        this.app.use(this.apiPaht.user, userRoute.getRouter())
     }
 
     connectDB() {

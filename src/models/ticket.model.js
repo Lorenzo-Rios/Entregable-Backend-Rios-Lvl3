@@ -3,40 +3,52 @@ import { Schema, model } from 'mongoose';
 const ticketsCollection = 'tickets';
 
 const ticketSchema = new Schema({
-    adoptionId: {
-        type: Schema.Types.ObjectId,
-        ref: 'adoptions'
+  adptionId: {
+    type: Schema.Types.ObjectId,
+    ref: 'adoptions',
+    required: true
+  },
+  petId: {
+    type: Schema.Types.ObjectId,
+    ref: 'pets',
+    required: true
+  },
+  adopterId: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+    required: true
+  },
+
+  adopterData: {
+    nombre: {
+        type: String
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+
+    direccion: {
+        type: String
     },
-    user: {
-        nombre: {
-            type: String
-        },
-        direccion: {
-            type: String
-        },
-        telefono: {
-            type: Number
-        },
+
+    telefono: {
+        type: Number
+    }
+  },
+
+  petData: {
+    nombre: {
+        type: String
     },
-    cart: {
-        pets: [
-            {
-                nombre: {
-                    type: String
-                },
-                especie: {
-                    type: String
-                },
-                edad: {
-                    type: Number
-                },
-            },
-        ]
+    especie: {
+      type: String
     },
+    fecha_de_nacimiento: {
+        type: String
+    },
+
+    adopted_at: {
+      type: Date,
+      default: Date.now
+    }
+  }
 });
 
 const ticketModel = model(ticketsCollection, ticketSchema);
