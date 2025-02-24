@@ -16,7 +16,7 @@
 
   /* Routes */
   import mocksRoute from '../routes/mocks.routes.js'
-  import userRoute from '../routes/users.routes.js'
+  import { UserRoute } from '../routes/Client/UserClass/userClass.routes.js'
   import viewRoute from '../routes/views.routes.js'
   import petRoute from '../routes/pets.routes.js'
   import sessionRoute from '../routes/sessions.routes.js'
@@ -75,12 +75,14 @@
         });
     }
     router(){
+        const userRoute = new UserRoute()
         this.app.use('/', viewRoute)
         this.app.use(this.apiPaht.session, sessionRoute)
         this.app.use(this.apiPaht.adoption, adoptionRoute)
         this.app.use(this.apiPaht.pet, petRoute)
         this.app.use(this.apiPaht.mock, mocksRoute)
         this.app.use(this.apiPaht.user, userRoute)
+        this.app.use(this.apiPaht.user, userRoute.getRouter());
     }
 
     connectDB() {

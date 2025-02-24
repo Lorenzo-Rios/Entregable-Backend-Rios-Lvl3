@@ -1,31 +1,20 @@
-import { userModel } from '../../models/user.model.js';
+import { userRepository } from '../../repository/User.repository.js';
 
-export const userViewAdapter = {
-  getPaginatedUsers: async (page, limit) => {
-    try {
-      const pageNumber = parseInt(page, 10);
-      const limitNumber = parseInt(limit, 10);
-
-      // Validar los valores de la página y el límite
-      if (isNaN(pageNumber) || pageNumber <= 0 || isNaN(limitNumber) || limitNumber <= 0) {
-        throw new Error('Invalid page or limit number');
-      }
-
-      const options = { page: pageNumber, limit: limitNumber, lean: true };
-      const result = await userModel.paginate({}, options);
-
-      return {
-        users: result.docs,
-        totalPages: result.totalPages || 1,
-        currentPage: result.page || 1,
-        hasPrevPage: result.hasPrevPage || false,
-        hasNextPage: result.hasNextPage || false,
-        prevLink: result.hasPrevPage ? `/Usuarios?page=${result.prevPage}&limit=${limitNumber}` : null,
-        nextLink: result.hasNextPage ? `/Usuarios?page=${result.nextPage}&limit=${limitNumber}` : null,
-      };
-    } catch (error) {
-      console.error('Error en getPaginatedUsers:', error);
-      throw error;
+class UserViewAdapter {
+    async getPaginatedUsers(page, limit) {
+        const users = await userRepository.getPaginatedUsers({}, { page, limit });
+        return {
+            users: users.docs,
+            totalPages: users.totalPages,
+            currentPage: users.page,
+            prevPage: users.prevPage,
+            nextPage: users.nextPage,
+            hasPrevPage: users.hasPrevPage,
+            hasNextPage: users.hasNextPage,
+            prevLink: users.hasPrevPage ? `/users?page=${users.prevPage}&limit=${limit}` : null,
+            nextLink: users.hasNextPage ? `/users?page=${users.nextPage}&limit=${limit}` : null,
+        };
     }
-  }
-};
+}
+
+export const userViewAdapter = new UserViewAdapter();

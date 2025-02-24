@@ -56,12 +56,23 @@ components:
         id:
           type: string
           example: "65d78c5f12abf6d3e4a9d23a"
-        name:
+        first_name:
           type: string
-          example: "Juan Pérez"
+          example: "Juan"
+        last_name:
+          type: string
+          example: "Pérez"
+        username:
+          type: string
+          example: "juanperez"
+        password:
+          type: string
         email:
           type: string
           example: "juanperez@email.com"
         role:
           type: string
           example: "user"
+        phone:
+          type: string
+          example: "+54 911 12345678"
