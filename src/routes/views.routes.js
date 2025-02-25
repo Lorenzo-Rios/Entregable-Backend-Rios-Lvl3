@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import { GetPet } from '../controllers/Pet/Pet.controller.js';
 import { renderUsers } from '../controllers/View/View.controller.js';
 import { passportCall } from '../passport/passportCall.js';
 import { authorization } from '../middlewares/authorization.middleware.js';

@@ -1,26 +1,53 @@
 import CartRepository from '../../repository/Cart.repository.js';
+import { petRepository } from '../../repository/Pet.repository.js';
 
 class CartController {
 
   static async getCart(req, res) {
     try {
-        const { cid } = req.params;  // Obtener el cartId desde los parámetros
-        const cart = await CartRepository.getCartById(cid); // Llamar al repositorio para obtener el carrito por ID
-        res.send(cart);  // Enviar el carrito como respuesta
+        const { cid } = req.params;
+        const cart = await CartRepository.getCartById(cid);
+
+        if (!cart) {
+            return res.status(404).json({ error: 'Carrito no encontrado' });
+        }
+
+        res.json(cart);
     } catch (error) {
-        res.status(500).send({ error: error.message });  // Si ocurre un error, enviamos el error
+        res.status(500).json({ error: error.message });
     }
   }
   static async addPet(req, res) {
     try {
         const { cid, pid } = req.params;
 
-        const cart = await CartRepository.addPetToCart(cid, pid);
-        res.send(cart);
+        // Verificar si el carrito existe
+        const cart = await CartRepository.getCartById(cid);
+        if (!cart) {
+            return res.status(404).json({ success: false, message: 'Carrito no encontrado' });
+        }
+
+        // Buscar la mascota en la base de datos
+        const pet = await petRepository.getPetById(pid);
+        if (!pet) {
+            return res.status(404).json({ success: false, message: 'Mascota no encontrada' });
+        }
+
+        // Verificar que la mascota esté disponible
+        if (pet.status !== "Disponible") {
+            return res.status(400).json({ success: false, message: 'Esta mascota ya está en proceso de adopción o ya fue adoptada' });
+        }
+
+        // Agregar la mascota al carrito
+        const updatedCart = await CartRepository.addPetToCart(cid, pid);
+
+        res.json({ success: true, message: 'Mascota añadida al carrito', cart: updatedCart });
+
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al añadir la mascota al carrito', error: error.message });
     }
-}
+  }
 
 static async updateCart(req, res) {
     try {

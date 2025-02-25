@@ -13,14 +13,21 @@ class CartDAO {
       if (!cart) throw new Error('Cart not found');
       if (!pet) throw new Error('Pet not found');
   
+      // Verificar que la mascota esté disponible antes de agregarla
+      if (pet.status !== "Disponible") {
+          throw new Error('Esta mascota ya está en proceso de adopción o ya fue adoptada');
+      }
+  
       const existingPetIndex = cart.pets.findIndex(p => p.pet.toString() === petId);
   
       if (existingPetIndex >= 0) {
-          // Si la mascota ya está en el carrito, no hacemos nada
-          return cart;
+          return cart; // La mascota ya está en el carrito, no hacemos nada
       } else {
-          // Agregamos la mascota al carrito
           cart.pets.push({ pet: petId });
+  
+          // Actualizar estado de la mascota a "En proceso de adopción"
+          pet.status = "En proceso de adopción";
+          await pet.save();
       }
   
       await cart.save();

@@ -1,83 +1,73 @@
 import { adoptionDAO } from '../mongo/Adoption/Adoption.dao.js';  
-import { cartModel } from '../models/cart.model.js';
-import  { productRepository }  from '../repositories/Product.repository.js';
+import { cartRepository } from './repository/Cart.repository.js';
+import  { petRepository }  from '../repository/Pet.repository.js';
 
-class OrderRepository {
-    async getOrders(page = 1, limit = 10) {
-        return await orderDAO.getOrders({}, { page, limit });  
+class AdoptionRepository {
+    async getAdoptions(page = 1, limit = 10) {
+        return await adoptionDAO.getAdoptions({}, { page, limit });  
     }
 
-    async createOrder({ cartId, user, metodoDePago }) {
-        const cart = await cartModel.findById(cartId).populate('products.product');
+    async createAdoption({ cartId, userData }) {
+        const cart = await cartRepository.getCartById(cartId).populate('pets.pet');
     
-        if (!cart || cart.products.length === 0) {
+        if (!cart || cart.pets.length === 0) {
             throw new Error('Cart is empty or not found');
         }
     
-        const productsToPurchase = [];
-        let total = 0;
+        const petsToPurchase = [];
     
-        for (const item of cart.products) {
-            const product = await productRepository.findProductById(item.product._id);
+        for (const item of cart.pets) {
+            const pet = await petRepository.findById(item.pet._id);
     
-            if (!product) {
-                throw new Error(`Product with ID ${item.product._id} not found`);
+            if (!pet) {
+                throw new Error(`Pet with ID ${item.pet._id} not found`);
             }
     
-            if (product.stock >= item.quantity) {
-                productsToPurchase.push({
-                    product: product._id,
-                    price: product.price,
-                    quantity: item.quantity,
-                });
-                total += product.price * item.quantity;
-    
-                // Actualizar el stock
-                await productRepository.updateProductStock(product._id, product.stock - item.quantity);
-            } else {
-                console.warn(`Insufficient stock for product ${product.tittle}`);
-            }
+              petsToPurchase.push({
+                  name: pet.name,
+                  species: pet.species,
+                  date: pet.date,
+                  owner: pet.owner
+              })
         }
     
-        if (productsToPurchase.length === 0) {
+        if (petsToPurchase.length === 0) {
             throw new Error('No products available to purchase');
         }
     
-        const orderData = {
-            user,
-            metodoDePago,
+        const adoptionData = {
+            userData,
             cart: {
-                products: productsToPurchase,
-                total,
+                pets: petsToPurchase
             },
-            estado: 'Pendiente',
+            status: 'Pendiente',
         };
     
         // Crear la orden
-        const newOrder = await orderDAO.createOrder(orderData); 
+        const newAdoption = await adoptionDAO.createAdoption(adoptionData); 
     
-        return { newOrder };
+        return { newAdoption };
     }
 
-    async updateOrder(orderId, updates) {
-        const updatedOrder = await orderDAO.updateOrder(orderId, updates); 
-        if (!updatedOrder.matchedCount) {
+    async updateAdoptionStatus(adoptionId, updates) {
+        const updatedAdoption = await adoptionDAO.updateAdoptionStatus(adoptionId, updates); 
+        if (!updatedAdoption.matchedCount) {
             throw new Error('Order not found');
         }
-        return updatedOrder;
+        return updatedAdoption;
     }
 
-    async deleteOrder(orderId) {
-        return await orderDAO.deleteOrder(orderId);  
+    async deleteAdoption(orderId) {
+        return await adoptionDAO.deleteAdoption(orderId);  
     }
 
-    async getPaginatedOrders(filter, options) {
-        const result = await orderDAO.getOrders(filter, options);  
+    async getPaginatedAdoptions(filter, options) {
+        const result = await adoptionDAO.getPaginatedAdoptions(filter, options);  
         if (!result.docs || result.docs.length === 0) {
-            throw new Error('No se encontraron ordenes');
+            throw new Error('No se encontraron adopciones');
         }
         return result;
     }
 }
 
-export const orderRepository = new OrderRepository();
+export const adoptionRepository = new AdoptionRepository();

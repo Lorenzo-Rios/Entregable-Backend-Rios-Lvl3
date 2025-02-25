@@ -24,7 +24,6 @@
         </li>
         {{/each}}
     </ul>
-    <h3 style="color: #28a745;">Total a pagar: ${{cartTotal}}</h3>
     <form action="" id="form-user" style="margin-top: 20px; padding: 15px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" 
             style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
@@ -35,7 +34,7 @@
         <input type="text" id="telefono" name="telefono" placeholder="Ingrese su telefono" 
             style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
     </form>
-    <button onclick="placeOrder()" style="width: 100%; padding: 12px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px;">
+    <button onclick="placeAdoption()" style="width: 100%; padding: 12px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px;">
         Ordenar
     </button>
 
@@ -45,7 +44,7 @@
     const cartId = '67bccb1ed96e6e13d4932012';
     const cartPets = document.getElementById('cartPets');
 
-    function removeFromCart(productId) {
+    function removeFromCart(petId) {
         Swal.fire({
             title: '¿Estás seguro?',
             text: "Esta acción no se puede deshacer.",
@@ -57,7 +56,7 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`/api/cart/${cartId}/products/${productId}`, { 
+                fetch(`/api/cart/${cartId}/products/${petId}`, { 
                     method: 'DELETE'
                 })
                 .then(response => {
@@ -71,12 +70,12 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Eliminado',
-                        text: 'Producto eliminado correctamente',
+                        text: 'Mascota eliminada correctamente del carro',
                         confirmButtonColor: '#28a745'
                     }).then(() => location.reload());
                 })
                 .catch(error => {
-                    console.error('Error al eliminar el producto:', error);
+                    console.error('Error al eliminar la mascota del carro:', error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -88,7 +87,7 @@
         });
     }
 
-    function placeOrder() {
+    function placeAdoption() {
         const nombre = document.getElementById('nombre').value;
         const direccion = document.getElementById('direccion').value;
         const telefono = document.getElementById('telefono').value;
@@ -111,7 +110,6 @@
             body: JSON.stringify({
                 cartId,
                 user: { nombre, direccion, telefono },
-                metodoDePago
             })
         })
         .then(response => {

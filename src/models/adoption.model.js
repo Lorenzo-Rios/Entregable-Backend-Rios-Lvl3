@@ -3,10 +3,16 @@ import { Schema, model } from 'mongoose';
 const adoptionsCollection = 'adoptions'
 
 const adoptionSchema = new Schema({ 
-  petId: {
-    type: Schema.Types.ObjectId,
-    ref: 'pets',
-    required: true
+  cart: {
+    pets: [
+      {
+        pet: {
+          type: Schema.Types.ObjectId,
+          ref: 'pets',
+          required: true
+        }
+      }
+    ]
   },
   adopterId: {
     type: Schema.Types.ObjectId,
@@ -36,18 +42,6 @@ const adoptionSchema = new Schema({
 
     telefono: {
         type: Number
-    }
-  },
-
-  petData: {
-    nombre: {
-        type: String
-    },
-    especie: {
-      type: String
-    },
-    date: {
-        type: String
     }
   }
 })

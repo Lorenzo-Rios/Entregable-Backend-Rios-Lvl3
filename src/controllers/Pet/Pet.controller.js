@@ -1,4 +1,4 @@
-import { petRepository } from '../repositories/PetRepository.js';
+import { petRepository } from '../../repository/Pet.repository.js';
 
 class PetController {
     async getAllPets(req, res) {
