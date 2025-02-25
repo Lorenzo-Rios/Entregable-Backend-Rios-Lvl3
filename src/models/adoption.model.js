@@ -46,7 +46,7 @@ const adoptionSchema = new Schema({
     especie: {
       type: String
     },
-    fecha_de_nacimiento: {
+    date: {
         type: String
     }
   }

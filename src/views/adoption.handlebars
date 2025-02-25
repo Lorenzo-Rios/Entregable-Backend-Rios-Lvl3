@@ -1,0 +1,31 @@
+ <div class="ticketContainer" style="margin-top: 20px;"></div>
+<script>
+ function showTicket(ticketId) {
+        fetch(`/api/ticket/${ticketId}`)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => { throw new Error(data.error || 'Error al obtener el ticket'); });
+            }
+            return response.json();  // Espera un JSON
+        })
+        .then(ticketData => {
+            console.log('Ticket:', ticketData);
+            // Mostrar el ticket en el frontend
+            Swal.fire({
+                title: 'Ticket',
+                html: `<pre>${JSON.stringify(ticketData, null, 2)}</pre>`,
+                confirmButtonColor: '#28a745'
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener el ticket:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Ocurrió un problema al obtener el ticket.',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    }
+</script>
+<div id="ticketContainer"></div>

@@ -1,31 +1,20 @@
-import { petModel } from '../../models/pet.model.js';
+import { petRepository } from '../../repository/Pet.repository.js';
 
-export const petViewAdapter = {
-  getPaginatedPets: async (page, limit) => {
-    try {
-      const pageNumber = parseInt(page, 10);
-      const limitNumber = parseInt(limit, 10);
-
-      // Validar los valores de la página y el límite
-      if (isNaN(pageNumber) || pageNumber <= 0 || isNaN(limitNumber) || limitNumber <= 0) {
-        throw new Error('Invalid page or limit number');
-      }
-
-      const options = { page: pageNumber, limit: limitNumber, lean: true };
-      const result = await petModel.paginate({}, options);
-
-      return {
-        pets: result.docs,
-        totalPages: result.totalPages || 1,
-        currentPage: result.page || 1,
-        hasPrevPage: result.hasPrevPage || false,
-        hasNextPage: result.hasNextPage || false,
-        prevLink: result.hasPrevPage ? `/Mascotas?page=${result.prevPage}&limit=${limitNumber}` : null,
-        nextLink: result.hasNextPage ? `/Mascotas?page=${result.nextPage}&limit=${limitNumber}` : null,
-      };
-    } catch (error) {
-      console.error('Error en getPaginatedPets:', error);
-      throw error;
+class PetViewAdapter {
+    async getPaginatedPets(page, limit) {
+        const users = await petRepository.getPaginatedPets({}, { page, limit });
+        return {
+            users: users.docs,
+            totalPages: users.totalPages,
+            currentPage: users.page,
+            prevPage: users.prevPage,
+            nextPage: users.nextPage,
+            hasPrevPage: users.hasPrevPage,
+            hasNextPage: users.hasNextPage,
+            prevLink: users.hasPrevPage ? `/users?page=${users.prevPage}&limit=${limit}` : null,
+            nextLink: users.hasNextPage ? `/users?page=${users.nextPage}&limit=${limit}` : null,
+        };
     }
-  }
-};
+}
+
+export const petViewAdapter = new PetViewAdapter();

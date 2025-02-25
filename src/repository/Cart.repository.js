@@ -14,7 +14,7 @@ const CartRepository = {
   
     updateCart: async (cartId, pets) => {
         if (!Array.isArray(pets)) {
-            throw new Error('Products must be an array');
+            throw new Error('Pets must be an array');
         }
         return await CartDao.updateCart(cartId, pets);
     },
