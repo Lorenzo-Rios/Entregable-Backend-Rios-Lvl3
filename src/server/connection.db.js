@@ -1,7 +1,12 @@
 import { connect } from 'mongoose'
 import dotenv from 'dotenv'
+import { program } from '../utils/commander.js'
 
-dotenv.config({ path: process.env.NODE_ENV === "test" ? ".env.test" : ".env.prod" });
+const { mode } = program.opts()
+
+dotenv.config({
+    path:   mode==='development' ? './.env.development' : './.env.production'
+})
 
 export const configObjet = {
     port: process.env.SERVER_PORT || 8081,

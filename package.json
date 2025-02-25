@@ -2,6 +2,7 @@
   "dependencies": {
     "@faker-js/faker": "^9.3.0",
     "bcrypt": "^5.1.1",
+    "commander": "^13.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -29,8 +30,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/index.js",
-    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js --mode production",
+    "dev": "node --watch ./src/index.js --mode development",
     "test": "mocha"
   },
   "keywords": [],
