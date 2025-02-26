@@ -129,11 +129,9 @@ components:
       type: object
       required:
         - first_name
-        - last_name
         - user_name
         - email
         - password
-        - role
       properties:
         id:
           type: string
@@ -155,6 +153,7 @@ components:
         role:
           type: string
           example: "user"
+          default: "user"
         phone:
           type: string
           example: "+54 911 12345678"

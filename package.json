@@ -32,7 +32,7 @@
   "scripts": {
     "start": "node ./src/index.js --mode production",
     "dev": "node --watch ./src/index.js --mode development",
-    "test": "mocha"
+    "test": "mocha test/Users.test.js"
   },
   "keywords": [],
   "author": "",
