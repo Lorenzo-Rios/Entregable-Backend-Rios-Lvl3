@@ -1,4 +1,5 @@
 import { petRepository } from '../../repository/Pet.repository.js';
+import { userRepository } from '../../repository/User.repository.js';
 
 class PetController {
     async getAllPets(req, res) {
@@ -26,14 +27,24 @@ class PetController {
     }
 
     async createPet(req, res) {
-        try {
-            const petData = req.body;
-            const newPet = await petRepository.create(petData);
-            res.status(201).json({ success: true, pet: newPet });
-        } catch (error) {
-            res.status(500).json({ success: false, message: 'Error al crear la mascota', error });
-        }
-    }
+      try {
+          const { owner, ...petData } = req.body; // Extraer el owner del body
+          const user = await userRepository.getUser({ user_name: owner });
+  
+          if (!user) {
+              return res.status(404).json({ success: false, message: "El dueño no existe" });
+          }
+  
+          const newPet = await petRepository.create({ ...petData, owner: user._id });
+  
+          // Agregar la mascota al array de pets del usuario
+          await userRepository.addPetToUser(user._id, newPet._id);
+  
+          res.status(201).json({ success: true, pet: newPet });
+      } catch (error) {
+          res.status(500).json({ success: false, message: "Error al crear la mascota", error });
+      }
+  }
 
     async updatePetStatus(req, res) {
         try {

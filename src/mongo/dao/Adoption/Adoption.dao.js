@@ -1,9 +1,12 @@
 import { adoptionModel } from '../../models/Adoption.model.js';
 
 class AdoptionDAO {
-    async getAdoptions(filter = {}, options = {}) {
-        return await adoptionModel.paginate(filter, options);
-    }
+  async getAdoptionById( adoptionId = {}) {
+    return await adoptionModel.findById(adoptionId);
+  }
+  async getPaginatedAdoptions(filter, options) {
+      return await adoptionModel.paginate(filter, options);
+  }
 
     async getById(adoptionId) {
         return await adoptionModel.findById(adoptionId).populate('petId');
@@ -21,9 +24,6 @@ class AdoptionDAO {
         return await adoptionModel.findByIdAndDelete(adoptionId);
     }
 
-    async getPaginatedAdoptions(filter, options) {
-        return await adoptionModel.paginate(filter, options);
-    }
 }
 
 export const adoptionDAO = new AdoptionDAO();

@@ -1,18 +1,28 @@
-import { adoptionRepository } from '../repository/Adoption.repository.js';
+import { adoptionRepository } from '../../repository/Adoption.repository.js';
 import { petRepository } from '../repository/Pet.repository.js';
 
 class AdoptionController {
-    async getAdoptions(req, res) {
+    async getAdoptionById(req, res) {
         try {
-            const { page = 1, limit = 10 } = req.query;
-            const adoptions = await adoptionRepository.getAdoptions(page, limit);
+            const { aid } = req.params;
+            const adoptions = await adoptionRepository.getAdoptionById(aid);
             res.json({ success: true, adoptions });
         } catch (error) {
             res.status(500).json({ success: false, message: 'Error al obtener adopciones', error });
+          }
         }
-    }
-
-    async createAdoption(req, res) {
+        
+        async getPaginatedAdoptions(req, res) {
+            try {
+                const { page = 1, limit = 10 } = req.query;
+                const result = await adoptionRepository.getPaginatedAdoptions({}, { page, limit });
+                res.json({ success: true, result });
+            } catch (error) {
+                res.status(500).json({ success: false, message: 'Error al obtener adopciones paginadas', error });
+            }
+        }
+        
+        async createAdoption(req, res) {
         try {
             const { cartId, userData } = req.body;
             const adoption = await adoptionRepository.createAdoption({ cartId, userData });
@@ -65,15 +75,6 @@ class AdoptionController {
         }
     }
 
-    async getPaginatedAdoptions(req, res) {
-        try {
-            const { page = 1, limit = 10 } = req.query;
-            const result = await adoptionRepository.getPaginatedAdoptions({}, { page, limit });
-            res.json({ success: true, result });
-        } catch (error) {
-            res.status(500).json({ success: false, message: 'Error al obtener adopciones paginadas', error });
-        }
-    }
 }
 
 export const adoptionController = new AdoptionController();

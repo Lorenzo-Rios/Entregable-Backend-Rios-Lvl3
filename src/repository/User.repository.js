@@ -3,12 +3,19 @@ import { UserDAO } from '../mongo/dao/User/User.dao.js';
 const userManager = new UserDAO();  
 
 class UserRepository {
+    async getUser(filter) {
+        return await userManager.getUser(filter);
+    }
 
     async getPaginatedUsers(filter, pagination) {
         return await userManager.getPaginatedUsers(filter, pagination);
     }
     async getAll() {
         return await userManager.getAllUsers();
+    }
+
+    async addPetToUser(userId, petId) {
+      return await userManager.addPetToUser(userId, petId);
     }
 
     async create(userData) {
@@ -21,10 +28,6 @@ class UserRepository {
 
     async delete(uid) {
         return await userManager.deleteUser(uid);
-    }
-
-    async getUser(filter) {
-        return await userManager.getUser(filter);
     }
 }
 

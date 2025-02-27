@@ -1,10 +1,18 @@
-import { adoptionDAO } from '../mongo/Adoption/Adoption.dao.js';  
+import { adoptionDAO } from '../mongo/dao/Adoption/Adoption.dao.js';  
 import { cartRepository } from './repository/Cart.repository.js';
 import  { petRepository }  from '../repository/Pet.repository.js';
 
 class AdoptionRepository {
-    async getAdoptions(page = 1, limit = 10) {
-        return await adoptionDAO.getAdoptions({}, { page, limit });  
+    async getAdoptionById(adoptionId) {
+        return await adoptionDAO.getAdoptions(adoptionId);  
+    }
+    
+    async getPaginatedAdoptions(filter, options) {
+        const result = await adoptionDAO.getPaginatedAdoptions(filter, options);  
+        if (!result.docs || result.docs.length === 0) {
+            throw new Error('No se encontraron adopciones');
+        }
+        return result;
     }
 
     async createAdoption({ cartId, userData }) {
@@ -61,13 +69,6 @@ class AdoptionRepository {
         return await adoptionDAO.deleteAdoption(orderId);  
     }
 
-    async getPaginatedAdoptions(filter, options) {
-        const result = await adoptionDAO.getPaginatedAdoptions(filter, options);  
-        if (!result.docs || result.docs.length === 0) {
-            throw new Error('No se encontraron adopciones');
-        }
-        return result;
-    }
 }
 
 export const adoptionRepository = new AdoptionRepository();
