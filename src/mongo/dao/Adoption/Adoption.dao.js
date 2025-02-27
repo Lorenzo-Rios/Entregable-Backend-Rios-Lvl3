@@ -1,4 +1,4 @@
-import { adoptionModel } from '../../models/Adoption.model.js';
+import { adoptionModel } from '../../../models/adoption.model.js';
 
 class AdoptionDAO {
   async getAdoptionById( adoptionId = {}) {

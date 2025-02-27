@@ -1,5 +1,5 @@
 import { adoptionRepository } from '../../repository/Adoption.repository.js';
-import { petRepository } from '../repository/Pet.repository.js';
+import { petRepository } from '../../repository/Pet.repository.js';
 
 class AdoptionController {
     async getAdoptionById(req, res) {

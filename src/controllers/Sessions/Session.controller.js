@@ -1,5 +1,5 @@
 import { userRepository } from '../../repository/User.repository.js';
-import { createHash, isValidPassword } from '../../utils/bcrypt.js';
+import { createHash, isValidPassword } from '../../utils/bycrypt.js';
 import { generateToken } from '../../utils/jsonwebtoken.js';
 
 class SessionController {

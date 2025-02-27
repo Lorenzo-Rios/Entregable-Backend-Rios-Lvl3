@@ -1,10 +1,10 @@
 import { adoptionDAO } from '../mongo/dao/Adoption/Adoption.dao.js';  
-import { cartRepository } from './repository/Cart.repository.js';
-import  { petRepository }  from '../repository/Pet.repository.js';
+import CartRepository from './Cart.repository.js';
+import  { petRepository }  from './Pet.repository.js';
 
 class AdoptionRepository {
     async getAdoptionById(adoptionId) {
-        return await adoptionDAO.getAdoptions(adoptionId);  
+        return await adoptionDAO.getAdoptionById(adoptionId);  
     }
     
     async getPaginatedAdoptions(filter, options) {
@@ -16,7 +16,7 @@ class AdoptionRepository {
     }
 
     async createAdoption({ cartId, userData }) {
-        const cart = await cartRepository.getCartById(cartId).populate('pets.pet');
+        const cart = await CartRepository.getCartById(cartId).populate('pets.pet');
     
         if (!cart || cart.pets.length === 0) {
             throw new Error('Cart is empty or not found');
@@ -25,7 +25,7 @@ class AdoptionRepository {
         const petsToPurchase = [];
     
         for (const item of cart.pets) {
-            const pet = await petRepository.findById(item.pet._id);
+            const pet = await petRepository.getPet(item.pet._id);
     
             if (!pet) {
                 throw new Error(`Pet with ID ${item.pet._id} not found`);
@@ -51,7 +51,7 @@ class AdoptionRepository {
             status: 'Pendiente',
         };
     
-        // Crear la orden
+        // Crear la adopcion
         const newAdoption = await adoptionDAO.createAdoption(adoptionData); 
     
         return { newAdoption };
