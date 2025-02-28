@@ -3,12 +3,15 @@ import { PetDAO } from '../mongo/dao/Pet/Pet.dao.js'
 const petManager = new PetDAO()
 
 class PetRepository {
-
-    async getPaginatedPets(filter, pagination) {
-        return await petManager.getPaginatedPets(filter, pagination);
-    }
     async getAll() {
         return await petManager.getAllPets();
+    }
+    async getPet(filter) {
+        return await petManager.getPet(filter).populate('owner')
+    }
+  
+    async getPaginatedPets(filter, pagination) {
+        return await petManager.getPaginatedPets(filter, pagination);
     }
 
     async create(petData) {
@@ -20,12 +23,9 @@ class PetRepository {
     }
 
     async delete(pid) {
-        return await petManager.deletePet(uid);
+        return await petManager.deletePet(pid);
     }
 
-    async getPet(filter) {
-        return await petManager.getPet(filter);
-    }
 }
 
 export const petRepository = new PetRepository();

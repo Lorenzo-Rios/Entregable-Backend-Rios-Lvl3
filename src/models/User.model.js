@@ -29,10 +29,11 @@ const userSchema = new Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
-    pets: {
-        type: Array,
+    pets: [{
+        type: Schema.Types.ObjectId,
+        ref: 'pets',
         default: []
-    }
+    }]
 });
 
 userSchema.plugin(mongoosePaginate)

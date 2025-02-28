@@ -2,7 +2,7 @@ import { userRepository } from '../../repository/User.repository.js'
 
 async function GetUser(req, res) {
     try {
-        const users = await userRepository.getUser();
+        const users = await userRepository.getAll();
         res.sendSuccess(users);
     } catch (error) {
         console.error('Error en GetUser:', error);

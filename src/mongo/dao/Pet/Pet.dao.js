@@ -5,11 +5,14 @@ class PetDAO {
         this.model = petModel
     }
 
-    getPaginatedPets = async (options, filter = {}) => await this.model.paginate(filter, options)
+    getPaginatedPets = async (options, filter = {}) => await this.model.paginate(filter, {
+      ...options,
+      populate: { path: 'owner' }
+    })
 
     getAllPets = async () => await this.model.find({})
 
-    getPet = async filter => await this.model.findOne(filter)
+    getPet = (filter) => this.model.findOne(filter)
 
     createPet = async newPet => await this.model.create(newPet)
 

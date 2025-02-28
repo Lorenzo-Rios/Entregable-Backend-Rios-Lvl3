@@ -46,12 +46,12 @@ class AdoptionController {
             if (status === "Aceptada") {
                 // Cambiar estado de todas las mascotas a "Adoptada"
                 for (const pet of adoption.pets) {
-                    await petRepository.updateAdoptionStatus(pet.petId, { status: "Adoptada" });
+                    await petRepository.update(pet.petId, { status: "Adoptada" });
                 }
             } else if (status === "Rechazada") {
                 // Si se rechaza, las mascotas vuelven a estar disponibles
                 for (const pet of adoption.pets) {
-                    await petRepository.updateAdoptionStatus(pet.petId, { status: "Disponible" });
+                    await petRepository.update(pet.petId, { status: "Disponible" });
                 }
             }
 
