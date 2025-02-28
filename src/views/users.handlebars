@@ -22,10 +22,11 @@
             {{#if this.pets.length}}
                 <ul style="padding-left: 20px;">
                     {{#each this.pets}}
+                        <li><strong> ----- </strong>
                         <li><strong>Nombre:</strong> {{this.name}}</li>
                         <li><strong>Especie:</strong> {{this.species}}</li>
                         <li><strong>Fecha:</strong> {{this.date}}</li>
-                        <li><strong>Estado:</strong> {{this.status}}</li>
+                        <li><strong>Estado:</strong> {{this.status}}</li><br>
                     {{/each}}
                 </ul>
             {{else}}

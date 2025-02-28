@@ -27,6 +27,11 @@ class CartController {
             return res.status(404).json({ success: false, message: 'Carrito no encontrado' });
         }
 
+        // Verificar si el carrito ya tiene una mascota
+        if (cart.pets.length > 0) {
+            return res.status(400).json({ success: false, message: 'Solo puedes adoptar una mascota a la vez.' });
+        }
+
         // Buscar la mascota en la base de datos
         const pet = await petRepository.getPetById(pid);
         if (!pet) {
@@ -47,7 +52,7 @@ class CartController {
         console.error(error);
         res.status(500).json({ success: false, message: 'Error al añadir la mascota al carrito', error: error.message });
     }
-  }
+}
 
 static async updateCart(req, res) {
     try {

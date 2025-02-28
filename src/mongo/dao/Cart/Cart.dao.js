@@ -10,12 +10,17 @@ class CartDAO {
       const cart = await cartModel.findById(cartId);
       const pet = await petModel.findById(petId);
   
-      if (!cart) throw new Error('Cart not found');
-      if (!pet) throw new Error('Pet not found');
+      if (!cart) throw new Error('Carrito no encontrado');
+      if (!pet) throw new Error('Mascota no encontrada');
   
       // Verificar que la mascota esté disponible antes de agregarla
       if (pet.status !== "Disponible") {
           throw new Error('Esta mascota ya está en proceso de adopción o ya fue adoptada');
+      }
+  
+      // Verificar si ya hay una mascota en el carrito
+      if (cart.pets.length > 0) {
+          throw new Error('Solo puedes adoptar una mascota a la vez');
       }
   
       const existingPetIndex = cart.pets.findIndex(p => p.pet.toString() === petId);

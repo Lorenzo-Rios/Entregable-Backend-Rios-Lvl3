@@ -7,8 +7,6 @@ class UserViewAdapter {
       // Convertir cada usuario a un objeto plano
       const usersPlain = users.docs.map(user => user.toObject());
 
-      console.log(usersPlain);
-
       return {
           users: usersPlain,
           totalPages: users.totalPages,
