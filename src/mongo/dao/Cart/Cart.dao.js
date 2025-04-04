@@ -1,5 +1,5 @@
 import { cartModel } from '../../../models/cart.model.js';
-import { petModel } from '../../../models/pet.model.js';
+import { petModel } from '../../../models/pet.model.js'
 
 class CartDAO {
     static async getCartById(cartId) {
